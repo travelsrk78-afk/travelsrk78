@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Replace admin@example.com with your admin email (same as VITE_ADMIN_EMAIL)
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.token.email == 'travelsrk78@gmail.com';
+    }
+
+    // Thumbnails shown in the gallery grid
+    match /gallery/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Full-size photos, fetched only when a visitor opens one
+    match /galleryFull/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
